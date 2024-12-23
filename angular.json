@@ -34,7 +34,8 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/assests"
             ],
             "styles": [
               "src/styles.css"
@@ -102,5 +103,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "d38eb991-f006-43f4-ae2e-ec9bbe2b215e"
   }
 }

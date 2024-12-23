@@ -1,0 +1,94 @@
+<div class="update-profile-container">
+    <h2>Update Profile</h2>
+    <form (ngSubmit)="updateProfile()" #profileForm="ngForm">
+      <div>
+        <label for="username">Username</label>
+        <input
+          type="text"
+          [(ngModel)]="user.username"
+          name="username"
+          required
+          minlength="7"
+          #username="ngModel"
+          readonly
+        />
+        <div *ngIf="username.invalid && username.touched">
+          <small class="error-text">Username must be at least 7 characters long.</small>
+        </div>
+      </div>
+  
+      <div>
+        <label for="email">Email</label>
+        <input
+          type="email"
+          [(ngModel)]="user.email"
+          name="email"
+          required
+          #email="ngModel"
+        />
+        <div *ngIf="email.invalid && email.touched">
+          <small class="error-text">Please enter a valid email address.</small>
+        </div>
+      </div>
+  
+      <div>
+        <label for="password">Password</label>
+        <input
+          type="password"
+          [(ngModel)]="user.password"
+          name="password"
+          required
+          minlength="8"
+          #password="ngModel"
+          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+        />
+        <div *ngIf="password.invalid && password.touched">
+          <small class="error-text">
+            Password must be at least 8 characters long, contain an uppercase letter, a number, and a special character.
+          </small>
+        </div>
+      </div>
+  
+      <div>
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          [(ngModel)]="confirmPassword"
+          name="confirmPassword"
+          required
+          [pattern]="confirmPasswordPattern"
+        />
+        <div *ngIf="confirmPassword && confirmPassword !== user.password">
+          <small class="error-text">Passwords do not match.</small>
+        </div>
+      </div>
+  
+      <!-- Role selection with radio buttons -->
+      <div>
+        <label>Role:</label>
+        <label>
+          <input
+            type="radio"
+            [(ngModel)]="user.role"
+            name="role"
+            value="USER"
+            required
+          />
+          User
+        </label>
+        <label>
+          <input
+            type="radio"
+            [(ngModel)]="user.role"
+            name="role"
+            value="AGENT"
+            required
+          />
+          Agent
+        </label>
+      </div>
+  
+      <button type="submit" [disabled]="profileForm.invalid">Update</button>
+    </form>
+  </div>
+  

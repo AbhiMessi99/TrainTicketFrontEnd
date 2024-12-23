@@ -1,0 +1,47 @@
+<div class="bookings-container">
+  <h1 class="title">My Bookings</h1>
+
+  <!-- Display a message if no tickets are found -->
+  <div *ngIf="tickets.length === 0" class="no-tickets">
+    <p>No tickets booked yet.</p>
+  </div>
+
+  <!-- Display the list of tickets -->
+  <div *ngIf="tickets.length > 0" class="tickets-section">
+    <table class="tickets-table">
+      <thead>
+        <tr>
+          <th>Ticket ID</th>
+          <th>Train Name</th>
+          <th>Source</th>
+          <th>Destination</th>
+          <th>Seats Booked</th>
+          <th>Passenger Names</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ticket of tickets; let i = index">
+          <td>{{ ticket.id }}</td>
+          <td>{{ ticket.train.trainName }}</td>
+          <td>{{ ticket.train.source }}</td>
+          <td>{{ ticket.train.destination }}</td>
+          <td>{{ ticket.seatsBooked }}</td>
+          <td>
+            <ul class="passenger-list">
+              <li *ngFor="let name of ticket.passengerNames">{{ name }}</li>
+            </ul>
+          </td>
+          <td>
+            <button class="cancel-btn" (click)="cancelTicket(ticket.id, i)">Cancel</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Logout Button -->
+  <div class="logout-container">
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </div>
+</div>

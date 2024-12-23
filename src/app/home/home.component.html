@@ -1,0 +1,99 @@
+<div class="home-container">
+  <h1>Welcome to the Train Ticket System</h1>
+  <p>Hello, <a [routerLink]="['/update-profile']" class="username-link">{{ username }}</a>!</p>
+  
+  <!-- Search Form -->
+  <div *ngIf="!selectedTrain && !bookedTicket">
+    <input type="text" [(ngModel)]="source" placeholder="Enter Source" />
+    <input type="text" [(ngModel)]="destination" placeholder="Enter Destination" />
+    <button (click)="searchTrains()">Search Trains</button>
+  </div>
+  
+  <!-- Train Search Results -->
+  <div *ngIf="trains.length > 0 && !selectedTrain && !bookedTicket">
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Train Name</th>
+          <th>Source</th>
+          <th>Destination</th>
+          <th>Seats Available</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let train of trains">
+          <td>{{ train.trainName }}</td>
+          <td>{{ train.source }}</td>
+          <td>{{ train.destination }}</td>
+          <td>{{ train.seatsAvailable }}</td>
+          <td>
+            <!-- Book button to show booking details -->
+            <button (click)="selectTrainForBooking(train)">Book</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="trains.length === 0 && !selectedTrain && !bookedTicket">
+    <p>No trains found for the given route.</p>
+  </div>
+
+  <!-- Booking Details Section -->
+  <div *ngIf="selectedTrain && !bookedTicket">
+    <h2>Booking Details for {{ selectedTrain.trainName }}</h2>
+    <p>Source: {{ selectedTrain.source }}</p>
+    <p>Destination: {{ selectedTrain.destination }}</p>
+    <p>Seats Available: {{ selectedTrain.seatsAvailable }}</p>
+
+    <!-- Input for number of seats -->
+    <input
+      type="number"
+      [(ngModel)]="seatsToBook"
+      placeholder="Number of Seats"
+      min="1"
+      [max]="selectedTrain.seatsAvailable"
+    />
+
+    <!-- Passenger name inputs -->
+    <div *ngFor="let passenger of getPassengerInputs(); let i = index">
+      <input
+        type="text"
+        [(ngModel)]="passengerNames[i]"
+        [placeholder]="'Enter Passenger ' + (i + 1) + ' Name'"
+      />
+    </div>
+
+    <!-- Confirm Booking Button -->
+    <button (click)="confirmBooking()">Confirm Booking</button>
+  </div>
+
+  <!-- Booked Ticket Details Section -->
+  <div *ngIf="bookedTicket">
+    <h2>Ticket Booked Successfully!</h2>
+    <p><strong>Train Name:</strong> {{ bookedTicket.train.trainName }}</p>
+    <p><strong>Source:</strong> {{ bookedTicket.train.source }}</p>
+    <p><strong>Destination:</strong> {{ bookedTicket.train.destination }}</p>
+    <p><strong>Seats Booked:</strong> {{ bookedTicket.seatsBooked }}</p>
+    <p><strong>Passengers:</strong></p>
+    <h4>Passenger Details</h4>
+      <table class="passenger-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Passenger Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let passenger of bookedTicket.passengerNames; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ passenger }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>The eticket will be sent to <strong>{{ email }}</strong></p>
+    <button (click)="resetView()">Back to Search</button>
+  </div>
+  <button [routerLink]="['/bookings']">Go to My Bookings</button>
+</div>
